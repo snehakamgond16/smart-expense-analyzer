@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.spring.smartexpense.entity.Expense;
+import com.spring.smartexpense.dto.ExpenseDTO;
 import com.spring.smartexpense.service.ExpenseService;
 
 @RestController
@@ -19,9 +19,9 @@ public class ExpenseController {
 
     // Add Expense
     @PostMapping("/add")
-    public ResponseEntity<Expense> addExpense(@RequestBody Expense expense) {
+    public ResponseEntity<ExpenseDTO> addExpense(@RequestBody ExpenseDTO dto) {
 
-        Expense savedExpense = expenseService.addExpense(expense);
+        ExpenseDTO savedExpense = expenseService.addExpense(dto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -30,9 +30,9 @@ public class ExpenseController {
 
     // Get All Expenses
     @GetMapping("/all")
-    public ResponseEntity<List<Expense>> getAllExpenses() {
+    public ResponseEntity<List<ExpenseDTO>> getAllExpenses() {
 
-        List<Expense> expenses = expenseService.getAllExpenses();
+        List<ExpenseDTO> expenses = expenseService.getAllExpenses();
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -49,5 +49,4 @@ public class ExpenseController {
                 .status(HttpStatus.OK)
                 .body("Expense deleted successfully");
     }
-
 }

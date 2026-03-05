@@ -1,13 +1,14 @@
 package com.spring.smartexpense.service;
 
 import java.util.List;
-import com.spring.smartexpense.entity.Category;
+
+import com.spring.smartexpense.dto.CategoryDTO;
 
 public interface CategoryService {
 
-    Category addCategory(Category category);
+    CategoryDTO addCategory(CategoryDTO categoryDTO);
 
-    List<Category> getAllCategories();
+    List<CategoryDTO> getAllCategories();
 
     void deleteCategory(Long id);
 

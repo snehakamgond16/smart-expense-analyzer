@@ -1,13 +1,12 @@
-package com.spring.smartexpense.service;
-
 import java.util.List;
-import com.spring.smartexpense.entity.Expense;
+
+import com.spring.smartexpense.dto.ExpenseDTO;
 
 public interface ExpenseService {
 
-    Expense addExpense(Expense expense);
+    ExpenseDTO addExpense(ExpenseDTO expenseDTO);
 
-    List<Expense> getAllExpenses();
+    List<ExpenseDTO> getAllExpenses();
 
     void deleteExpense(Long id);
 

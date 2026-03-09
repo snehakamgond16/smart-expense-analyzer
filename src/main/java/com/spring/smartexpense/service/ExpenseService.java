@@ -1,5 +1,6 @@
 package com.spring.smartexpense.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.spring.smartexpense.dto.ExpenseDTO;
@@ -13,4 +14,8 @@ public interface ExpenseService {
 
     void deleteExpense(Long id);
 
+    List<ExpenseDTO> filterExpenses(Long categoryId,
+            Long userId,
+            LocalDate startDate,
+            LocalDate endDate);
 }

@@ -1,5 +1,6 @@
 package com.spring.smartexpense.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,19 @@ public class ExpenseController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body("Expense deleted successfully");
+    }
+    
+    @GetMapping("/filter")
+    public ResponseEntity<List<ExpenseDTO>> filterExpenses(
+
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate) {
+
+        List<ExpenseDTO> expenses =
+                expenseService.filterExpenses(categoryId, userId, startDate, endDate);
+
+        return ResponseEntity.ok(expenses);
     }
 }

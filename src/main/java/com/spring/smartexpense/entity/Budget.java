@@ -20,8 +20,7 @@ public class Budget {
 
     private Integer year;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne
     private User user;
 
 }

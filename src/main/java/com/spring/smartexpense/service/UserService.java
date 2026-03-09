@@ -1,15 +1,15 @@
 package com.spring.smartexpense.service;
 
 import java.util.List;
-import com.spring.smartexpense.entity.User;
+import com.spring.smartexpense.dto.UserDTO;
 
 public interface UserService {
 
-    User createUser(User user);
+    UserDTO registerUser(UserDTO dto);
 
-    List<User> getAllUsers();
+    List<UserDTO> getAllUsers();
 
-    User getUserById(Long id);
+    UserDTO getUserById(Long id);
 
     void deleteUser(Long id);
 

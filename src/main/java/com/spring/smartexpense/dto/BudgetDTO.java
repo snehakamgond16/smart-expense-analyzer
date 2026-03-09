@@ -9,7 +9,9 @@ public class BudgetDTO {
 
     private Double amount;
 
-    private Long categoryId;
+    private Integer month;
+
+    private Integer year;
 
     private Long userId;
 

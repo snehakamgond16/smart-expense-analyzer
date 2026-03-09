@@ -1,5 +1,6 @@
 package com.spring.smartexpense.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -93,6 +94,45 @@ public class ExpenseServiceImpl implements ExpenseService {
         }
 
         expenseRepository.deleteById(id);
+    }
+    
+    @Override
+    public List<ExpenseDTO> filterExpenses(Long categoryId,
+                                           Long userId,
+                                           LocalDate startDate,
+                                           LocalDate endDate) {
+
+        List<Expense> expenses;
+
+        if (categoryId != null) {
+            expenses = expenseRepository.findByCategoryId(categoryId);
+        }
+
+        else if (userId != null) {
+            expenses = expenseRepository.findByUserId(userId);
+        }
+
+        else if (startDate != null && endDate != null) {
+            expenses = expenseRepository.findByDateBetween(startDate, endDate);
+        }
+
+        else {
+            expenses = expenseRepository.findAll();
+        }
+
+        return expenses.stream().map(expense -> {
+
+            ExpenseDTO dto = new ExpenseDTO();
+            dto.setId(expense.getId());
+            dto.setAmount(expense.getAmount());
+            dto.setDescription(expense.getDescription());
+            dto.setDate(expense.getDate());
+            dto.setCategoryId(expense.getCategory().getId());
+            dto.setUserId(expense.getUser().getId());
+
+            return dto;
+
+        }).toList();
     }
 
 }

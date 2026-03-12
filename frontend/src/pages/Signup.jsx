@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   TextField,
@@ -8,8 +8,41 @@ import {
   Paper,
   Link
 } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+import axios from "axios";
 
 function Signup() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: ""
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/users/register",
+        formData
+      );
+
+      alert("User registered successfully 🎉");
+      console.log(response.data);
+
+    } catch (error) {
+      alert("Registration failed ❌");
+      console.error(error);
+    }
+  };
+
   return (
     <Container maxWidth="sm">
       <Box
@@ -26,37 +59,49 @@ function Signup() {
             Create Account ✨
           </Typography>
 
-          <Box component="form" sx={{ mt: 2 }}>
-            
-            <TextField fullWidth label="Name" margin="normal" required />
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
             
             <TextField
               fullWidth
+              label="Name"
+              name="name"
+              margin="normal"
+              required
+              onChange={handleChange}
+            />
+
+            <TextField
+              fullWidth
               label="Email"
+              name="email"
               type="email"
               margin="normal"
               required
+              onChange={handleChange}
             />
 
             <TextField
               fullWidth
               label="Password"
+              name="password"
               type="password"
               margin="normal"
               required
+              onChange={handleChange}
             />
 
             <Button
               fullWidth
               variant="contained"
               size="large"
+              type="submit"
               sx={{ mt: 2 }}
             >
               Sign Up
             </Button>
 
             <Box sx={{ textAlign: "center", mt: 2 }}>
-              <Link href="/" underline="hover">
+              <Link component={RouterLink} to="/" underline="hover">
                 Already have an account? Login
               </Link>
             </Box>

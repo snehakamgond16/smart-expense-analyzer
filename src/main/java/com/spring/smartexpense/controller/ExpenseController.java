@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.spring.smartexpense.dto.ApiResponse;
 import com.spring.smartexpense.dto.ExpenseDTO;
 import com.spring.smartexpense.service.ExpenseService;
 
@@ -18,50 +19,42 @@ public class ExpenseController {
     @Autowired
     private ExpenseService expenseService;
 
-    // Add Expense
     @PostMapping("/add")
-    public ResponseEntity<ExpenseDTO> addExpense(@RequestBody ExpenseDTO dto) {
+    public ResponseEntity<ApiResponse
+    <ExpenseDTO>> addExpense(@RequestBody ExpenseDTO dto) {
 
-        ExpenseDTO savedExpense = expenseService.addExpense(dto);
+        ExpenseDTO saved = expenseService.addExpense(dto);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(savedExpense);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(true, "Expense added successfully", saved));
     }
 
-    // Get All Expenses
     @GetMapping("/all")
-    public ResponseEntity<List<ExpenseDTO>> getAllExpenses() {
+    public ResponseEntity<ApiResponse<List<ExpenseDTO>>> getAllExpenses() {
 
-        List<ExpenseDTO> expenses = expenseService.getAllExpenses();
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(expenses);
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Expenses fetched successfully",
+                        expenseService.getAllExpenses()));
     }
 
-    // Delete Expense
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteExpense(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteExpense(@PathVariable Long id) {
 
         expenseService.deleteExpense(id);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("Expense deleted successfully");
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Expense deleted successfully", null));
     }
-    
-    @GetMapping("/filter")
-    public ResponseEntity<List<ExpenseDTO>> filterExpenses(
 
+    @GetMapping("/filter")
+    public ResponseEntity<ApiResponse<List<ExpenseDTO>>> filterExpenses(
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) Long userId,
-            @RequestParam(required = false) LocalDate startDate,
-            @RequestParam(required = false) LocalDate endDate) {
+            @RequestParam(required = false) java.time.LocalDate startDate,
+            @RequestParam(required = false) java.time.LocalDate endDate) {
 
-        List<ExpenseDTO> expenses =
-                expenseService.filterExpenses(categoryId, userId, startDate, endDate);
-
-        return ResponseEntity.ok(expenses);
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Filtered expenses fetched successfully",
+                        expenseService.filterExpenses(categoryId, userId, startDate, endDate)));
     }
 }

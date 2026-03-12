@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.spring.smartexpense.dto.ApiResponse;
 import com.spring.smartexpense.service.AnalyticsService;
 
 @RestController
@@ -15,21 +16,21 @@ public class AnalyticsController {
     @Autowired
     private AnalyticsService analyticsService;
 
-    // Category wise summary
     @GetMapping("/category-summary")
-    public ResponseEntity<Map<String, Double>> getCategorySummary(
+    public ResponseEntity<ApiResponse<java.util.Map<String, Double>>> categorySummary(
             @RequestParam Long userId) {
 
         return ResponseEntity.ok(
-                analyticsService.getCategoryWiseExpenses(userId));
+                new ApiResponse<>(true, "Category summary fetched successfully",
+                        analyticsService.getCategoryWiseExpenses(userId)));
     }
 
-    // Monthly summary
     @GetMapping("/monthly-summary")
-    public ResponseEntity<Map<String, Double>> getMonthlySummary(
+    public ResponseEntity<ApiResponse<java.util.Map<String, Double>>> monthlySummary(
             @RequestParam Long userId) {
 
         return ResponseEntity.ok(
-                analyticsService.getMonthlyExpenses(userId));
+                new ApiResponse<>(true, "Monthly summary fetched successfully",
+                        analyticsService.getMonthlyExpenses(userId)));
     }
 }

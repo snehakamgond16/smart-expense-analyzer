@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.spring.smartexpense.dto.ApiResponse;
 import com.spring.smartexpense.dto.BudgetDTO;
 import com.spring.smartexpense.service.BudgetService;
 
@@ -17,36 +18,29 @@ public class BudgetController {
     @Autowired
     private BudgetService budgetService;
 
-    // Add Budget
     @PostMapping("/add")
-    public ResponseEntity<BudgetDTO> addBudget(@RequestBody BudgetDTO dto) {
+    public ResponseEntity<ApiResponse<BudgetDTO>> addBudget(@RequestBody BudgetDTO dto) {
 
-        BudgetDTO savedBudget = budgetService.addBudget(dto);
+        BudgetDTO saved = budgetService.addBudget(dto);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(savedBudget);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(true, "Budget added successfully", saved));
     }
 
-    // Get All Budgets
     @GetMapping("/all")
-    public ResponseEntity<List<BudgetDTO>> getAllBudgets() {
+    public ResponseEntity<ApiResponse<List<BudgetDTO>>> getAllBudgets() {
 
-        List<BudgetDTO> budgets = budgetService.getAllBudgets();
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(budgets);
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Budgets fetched successfully",
+                        budgetService.getAllBudgets()));
     }
 
-    // Delete Budget
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteBudget(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteBudget(@PathVariable Long id) {
 
         budgetService.deleteBudget(id);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("Budget deleted successfully");
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Budget deleted successfully", null));
     }
 }

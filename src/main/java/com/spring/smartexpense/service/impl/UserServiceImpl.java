@@ -79,4 +79,23 @@ public class UserServiceImpl implements UserService {
 
         userRepository.deleteById(id);
     }
+    
+    @Override
+    public UserDTO login(String email, String password) {
+
+        User user = userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!user.getPassword().equals(password)) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+
+        return dto;
+    }
 }

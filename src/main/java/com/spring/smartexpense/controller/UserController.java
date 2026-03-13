@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.spring.smartexpense.dto.ApiResponse;
+import com.spring.smartexpense.dto.LoginRequestDTO;
 import com.spring.smartexpense.dto.UserDTO;
 import com.spring.smartexpense.service.UserService;
 
@@ -50,5 +51,16 @@ public class UserController {
 
         return ResponseEntity.ok(
                 new ApiResponse<>(true, "User deleted successfully", null));
+    }
+    
+    @PostMapping("/login")
+    public ResponseEntity<UserDTO> login(@RequestBody LoginRequestDTO request) {
+
+        UserDTO user = userService.login(
+                request.getEmail(),
+                request.getPassword()
+        );
+
+        return ResponseEntity.ok(user);
     }
 }
